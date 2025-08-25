@@ -11,6 +11,8 @@ import com.ecommers.model.Producto;
 import com.ecommers.model.Usuario;
 import com.ecommers.service.ProductoService;
 
+import org.springframework.ui.Model;
+
 @Controller
 @RequestMapping("/productos")
 public class ProductoController {
@@ -21,7 +23,8 @@ public class ProductoController {
 	private ProductoService productoService;
 	
 	@GetMapping("")
-	public String show() {
+	public String show(Model model) {
+	    model.addAttribute("productos", productoService.findAll());
 		return "productos/show";
 	}
 	
