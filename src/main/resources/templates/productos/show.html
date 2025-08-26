@@ -2,75 +2,154 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Spring eCommerce</title>
+  <title>Spring eCommerce - Productos</title>
 
   <!-- Bootstrap core CSS -->
   <link th:href="@{vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-  <!-- Custom styles for this template -->
-  <link th:href="@{css/heroic-features.css}" rel="stylesheet">
 
+  <!-- Estilos personalizados -->
+  <style>
+    body {
+      background: #f4f6f9;
+    }
+
+    h1 {
+      color: #2c5364;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .breadcrumb {
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #2c5364, #203a43);
+      border: none;
+      border-radius: 8px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #203a43, #0f2027);
+      transform: scale(1.05);
+    }
+
+    .table {
+      background: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .table thead {
+      background: #2c5364;
+      color: #ffffff;
+    }
+
+    .table th {
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .table td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .btn-warning {
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    .btn-danger {
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    .btn-warning:hover,
+    .btn-danger:hover {
+      transform: scale(1.05);
+      transition: 0.2s;
+    }
+  </style>
 </head>
 
 <body>
 
-	<!-- Navigation -->
-	<div th:include="administrador/template_admin.html::header"></div>
-	
-	<!-- Page Content -->
-	<div class="container">
-	
-	  <!-- Page Heading/Breadcrumbs -->
-	  <h1 class="mt-4 mb-3">
-	    Spring eCommerce <small>Productos</small>
-	  </h1>
-	
-	  <ol class="breadcrumb">
-	    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-	    <li class="breadcrumb-item active">Ver Productos</li>
-	  </ol>
-	
-	  <a class="btn btn-primary" th:href="@{/productos/create}" > Crear Producto</a>
-	  <h2>Productos</h2>
-	  <table class="table">
-	    <thead>
-	      <tr>
-	        <th scope="col">Nombre</th>
-	        <th scope="col">Descripción</th>
-	        <th scope="col">Inventario</th>
-	        <th scope="col">Precio</th>
-	        <th scope="col">Acción</th>
-	        <th scope="col">Acción</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr th:each="producto:${productos}">
-	        <td th:text="${producto.nombre}"></td>
-	        <td th:text="${producto.descripcion}"></td>
-	        <td th:text="${producto.cantidad}"></td>
-	        <td th:text="${producto.precio}"></td>
-	        <td><a  class="btn btn-warning" th:href="@{productos/edit/{id} (id=${producto.id})}">Editar</a> </td>
-	        <td><a  class="btn btn-danger" th:href="@{productos/delete/{id} (id=${producto.id})}">Eliminar</a> </td>
-	      </tr>       
-	    </tbody>
-	  </table>
-	
-	</div>
-	<!-- /.container -->
+  <!-- Navigation -->
+  <div th:include="administrador/template_admin.html::header"></div>
 
-	<!-- Footer -->
-	<div th:include="administrador/template_admin.html::footer"></div>
+  <br>
+  <!-- Page Content -->
+  <div class="container mt-5">
 
-	<!-- Bootstrap core JavaScript -->
-	<script th:src="@{vendor/jquery/jquery.min.js}"></script>
-	<script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="mb-4">
+      <i class="bi bi-box-seam"></i> Productos Disponibles
+    </h1>
 
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a th:href="@{administrador}">Home</a></li>
+      <li class="breadcrumb-item active">Ver Productos</li>
+    </ol>
+
+    <div class="mb-3 text-right">
+      <a class="btn btn-primary" th:href="@{/productos/create}">
+        <i class="bi bi-plus-circle"></i> Crear Producto
+      </a>
+    </div>
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Inventario</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Acción</th>
+          <th scope="col">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="producto : ${productos}">
+          <td th:text="${producto.nombre}"></td>
+          <td th:text="${producto.descripcion}"></td>
+          <td th:text="${producto.cantidad}"></td>
+          <td th:text="${producto.precio}"></td>
+          <td>
+            <a class="btn btn-warning btn-sm"
+               th:href="@{productos/edit/{id}(id=${producto.id})}">
+               <i class="bi bi-pencil-square"></i> Editar
+            </a>
+          </td>
+          <td>
+            <a class="btn btn-danger btn-sm"
+               th:href="@{productos/delete/{id}(id=${producto.id})}">
+               <i class="bi bi-trash"></i> Eliminar
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <div th:include="administrador/template_admin.html::footer"></div>
+
+  <!-- Bootstrap core JavaScript -->
+  <script th:src="@{vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </body>
-
 </html>
