@@ -10,7 +10,6 @@
 
 	<title>Spring eCommerce</title>
 
-
 	<!-- Bootstrap core CSS -->
 	<link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 	<!-- FontAwesome para íconos -->
@@ -43,7 +42,7 @@
 						<p class="card-text" th:text="${producto.nombre}"></p>
 					</div>
 					<div class="card-footer">
-						<a href="productohome.html" class="btn btn-success">Ver producto</a>
+						<a th:href="@{/productohome/{id} (id=${producto.id})}" class="btn btn-success">Ver producto</a>
 					</div>
 				</div>
 			</div>
@@ -57,7 +56,6 @@
 	<!-- Footer -->
 	<div th:include="usuario/template_usuario.html::footer">
 	</div>
-
 
 	<!-- Bootstrap core JavaScript -->
 	<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
