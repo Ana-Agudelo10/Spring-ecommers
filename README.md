@@ -4,6 +4,7 @@ Por medio del proyecto gestionaremos los productos dentro de una tienda en líne
 podemos crear, listar, editar y eliminar productos.
 
 El flujo básico es:
+
 • El usuario administrador ingresa a la página.
 • Puede ver una tabla con los productos disponibles.
 • Desde allí puede acceder a la opción de crear un nuevo producto.
