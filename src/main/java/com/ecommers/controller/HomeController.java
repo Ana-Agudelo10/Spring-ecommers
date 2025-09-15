@@ -1,5 +1,6 @@
 package com.ecommers.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,8 @@ import com.ecommers.service.ProductoService;
 @Controller
 @RequestMapping("/")
 public class HomeController {
+
+    private final AdministradorController administradorController;
 	
 	private final Logger log= LoggerFactory.getLogger(HomeController.class);
 	
@@ -33,6 +36,10 @@ public class HomeController {
 	
 	// Datos de la orden
 	Orden orden = new Orden();
+
+    HomeController(AdministradorController administradorController) {
+        this.administradorController = administradorController;
+    }
 	
 	@GetMapping("")
 	public String home(Model model) {
@@ -56,7 +63,7 @@ public class HomeController {
 	}
 	
 	@PostMapping("/cart")
-	public String addCart(@RequestParam Integer id, @RequestParam Integer cantidad) {
+	public String addCart(@RequestParam Integer id, @RequestParam Integer cantidad, Model model) {
 		DetalleOrden detalleOrden = new DetalleOrden();
 		Producto producto = new Producto();
 		double sumaTotal = 0;
@@ -64,6 +71,55 @@ public class HomeController {
 		Optional<Producto> optionalProducto = productoService.get(id);
 		log.info("Producto añadido: {}", optionalProducto.get());
 		log.info("Cantidad: {}", cantidad);
+		producto=optionalProducto.get();
+		
+		detalleOrden.setCantidad(cantidad);
+		detalleOrden.setPrecio(producto.getPrecio());
+		detalleOrden.setNombre(producto.getNombre());
+		detalleOrden.setTotal(producto.getPrecio()*cantidad);
+		detalleOrden.setProducto(producto);
+		
+		detalles.add(detalleOrden);
+		
+		sumaTotal=detalles.stream().mapToDouble(dt->dt.getTotal()).sum();
+		
+		orden.setTotal(sumaTotal);
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);
+		
+		return "usuario/carrito";
+	}
+	
+	//Quitar un producto del carrito
+	@GetMapping("/delete/cart/{id}")
+	public String deleteProductoCart(@PathVariable Integer id, Model model) {
+		
+		//Lista nueva de productos
+		List<DetalleOrden> ordenesNueva = new ArrayList<DetalleOrden>();
+		
+
+		//Si ejemplo detalleOrden tiene los id=  1, 2 y 3
+		// Si es diferente lo va a agregar es decir se elimina el 3 y agrega el 1 y 2
+		
+		for(DetalleOrden detalleOrden: detalles) {
+			//Si el id del producto es diferente del id como argumento del metodo
+			if(detalleOrden.getProducto().getId()!=id){
+				//Lo va a agregar al detalle
+				ordenesNueva.add(detalleOrden);
+			}
+		}
+		
+		//Poner la nueva lista con los productos restantes
+		detalles=ordenesNueva;
+		
+		double sumaTotal=0;
+		
+		// Se realiza un recalculo
+		sumaTotal=detalles.stream().mapToDouble(dt->dt.getTotal()).sum();
+		
+		orden.setTotal(sumaTotal);
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);
 		
 		return "usuario/carrito";
 	}
