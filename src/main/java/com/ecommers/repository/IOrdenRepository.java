@@ -3,10 +3,9 @@ package com.ecommers.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ecommers.model.Usuario;
-
+import com.ecommers.model.Orden;
 
 @Repository
-public interface IUsuarioRepository extends JpaRepository <Usuario, Integer>{
+public interface IOrdenRepository extends JpaRepository<Orden, Integer> {
 
 }
