@@ -9,14 +9,11 @@ import com.ecommers.repository.IOrdenRepository;
 @Service
 public class OrdenServiceImpl implements IOrdenService {
 
-
     @Autowired
     private IOrdenRepository ordenRepository;
 
     @Override
-    public Orden save(Orden order) {
+    public Orden save(Orden orden) {
         return ordenRepository.save(orden);
-        
     }
-
 }
